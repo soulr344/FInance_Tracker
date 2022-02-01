@@ -71,21 +71,19 @@ class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         var query = "SELECT * FROM $TABLE_NAME "
         val temp = db.rawQuery(query + "ORDER BY ${BaseColumns._ID} DESC LIMIT 1", null)
 
-        var last = 0
+        var lastId = 0
         if (temp.moveToFirst()) {
-            do {
-                last = temp.getString(temp.getColumnIndex(BaseColumns._ID)).toInt()
-            } while (temp.moveToNext())
+            lastId = temp.getString(temp.getColumnIndex(BaseColumns._ID)).toInt()
         }
-        if (last <= count) return list
+        if (lastId < count) return list
 
-        val limit = last - count
+        val limit = lastId - count
         var order = "DESC"
-        if (last == (last - count)){
+        if (lastId == (lastId - count)){
             order = "ASC"
         }
 
-        count = last
+        count = lastId
         val result = db.rawQuery(query + "ORDER BY ${BaseColumns._ID} $order LIMIT $limit", null)
         if (result.moveToFirst()) {
             do {
@@ -107,6 +105,9 @@ class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val selection = "${BaseColumns._ID} = '$id'"
         val deletedRows = this.writableDatabase.delete(TABLE_NAME, selection, null)
         Toast.makeText(context, "Deleted $deletedRows record(s).", Toast.LENGTH_SHORT).show()
+        if (id == count) {
+            count--
+        }
     }
 
     companion object {

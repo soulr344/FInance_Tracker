@@ -65,6 +65,7 @@ open class HistoryFragment: Fragment(R.layout.history_fragment)  {
             amountDesc = "Spent "
         }
         val binding = CardBinding.bind(card)
+        binding.idText.setText(id.toString())
         binding.currBalanceText.setText(generateText("Balance: ", getMoney(currBalance)))
         binding.amountText.setText(generateText(amountDesc,amountStr))
         binding.balanceAfterText.setText(generateText("Balance After: ", (currBalance + amount).toString()))
