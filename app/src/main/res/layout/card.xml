@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="10dp"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -37,15 +37,17 @@
             android:layout_margin="3dp"
             android:layout_weight="1"
             android:text="currBalance"
+            android:layout_alignParentTop="true"
             android:textAlignment="textStart" />
 
         <TextView
-        android:id="@+id/amountText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp"
-        android:layout_weight="1"
-        android:text="Amount" />
+            android:id="@+id/amountText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:layout_weight="1"
+            android:layout_below="@id/currBalanceText"
+            android:text="Amount" />
 
         <TextView
             android:id="@+id/balanceAfterText"
@@ -54,11 +56,14 @@
             android:layout_margin="3dp"
             android:layout_weight="1"
             android:text="currBalance"
+            android:layout_below="@id/amountText"
             android:textAlignment="textStart" />
 
         <LinearLayout
+            android:id="@+id/reasonTextContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/balanceAfterText"
             android:orientation="horizontal">
 
             <TextView
@@ -73,6 +78,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/reasonTextContainer"
             android:orientation="horizontal">
 
             <TextView
@@ -93,5 +99,5 @@
                 android:text="HH:MM"
                 android:textAlignment="textStart" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
