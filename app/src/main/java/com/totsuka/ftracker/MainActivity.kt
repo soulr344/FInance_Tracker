@@ -9,10 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.totsuka.ftracker.ui.main.SectionsPagerAdapter
 import com.totsuka.ftracker.databinding.ActivityMainBinding
 import com.totsuka.ftracker.ui.main.DbHelper
-import com.totsuka.ftracker.ui.main.MainFragment
 
 var db: DbHelper? = null
-var onBG: Boolean = false
 
 class MainActivity : AppCompatActivity() {
 
