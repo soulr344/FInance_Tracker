@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.totsuka.ftracker.ui.main.SectionsPagerAdapter
 import com.totsuka.ftracker.databinding.ActivityMainBinding
 import com.totsuka.ftracker.ui.main.DbHelper
+import android.view.Menu
+
 
 var db: DbHelper? = null
 
@@ -34,6 +36,15 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
 
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayShowHomeEnabled(true);
+
         db = DbHelper(this)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
 }
