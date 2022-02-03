@@ -12,6 +12,7 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
+            android:forceDarkAllowed="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.FInanceTracker.NoActionBar">
             <intent-filter>
