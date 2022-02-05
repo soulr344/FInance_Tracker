@@ -1,23 +1,37 @@
 package com.totsuka.ftracker.ui.main
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.SpannableStringBuilder
+import android.util.Log
+import android.view.GestureDetector
+import android.view.GestureDetector.OnGestureListener
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.animation.LinearInterpolator
 import androidx.appcompat.app.AlertDialog
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.content.ContextCompat
 import androidx.core.text.bold
 import androidx.core.text.italic
+import androidx.core.view.GestureDetectorCompat
 import androidx.fragment.app.Fragment
+import com.google.android.material.behavior.SwipeDismissBehavior
+import com.google.android.material.snackbar.Snackbar
 import com.totsuka.ftracker.R
 import com.totsuka.ftracker.databinding.CardBinding
 import com.totsuka.ftracker.databinding.HistoryFragmentBinding
 import com.totsuka.ftracker.db
-
-lateinit var a: HistoryFragment
+import com.google.android.material.card.MaterialCardView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlin.math.min
 
 open class HistoryFragment: Fragment(R.layout.history_fragment)  {
     private var historyFragmentBinding: HistoryFragmentBinding? = null
@@ -54,58 +68,89 @@ open class HistoryFragment: Fragment(R.layout.history_fragment)  {
         }
     }
 
-    fun addCard(id: Int, amount: Int, currBalance: Int, reason: String, date: String, time: String){
+    fun addCard(id: Int, amount: Int, currBalance: Int, reason: String, date: String, time: String) {
         val card: View = LayoutInflater.from(context).inflate(R.layout.card, null, false);
         historyFragmentBinding!!.container.addView(card, 0)
 
         var amountStr: String = getMoney(amount)
-        var amountDesc = "Deposited "
-        if (amount < 0){
+        var amountDesc = "Deposited: "
+        if (amount < 0) {
             amountStr = getMoney(-amount)
-            amountDesc = "Spent "
+            amountDesc = "Spent: "
         }
         val binding = CardBinding.bind(card)
         binding.idText.setText(id.toString())
         binding.currBalanceText.setText(generateText("Balance: ", getMoney(currBalance)))
-        binding.amountText.setText(generateText(amountDesc,amountStr))
-        binding.balanceAfterText.setText(generateText("Balance After: ", (currBalance + amount).toString()))
-        binding.reasonText.setText(generateText("Reason: ", reason.replaceFirstChar { a -> a.uppercaseChar() }))
+        binding.amountText.setText(generateText(amountDesc, amountStr))
+        binding.balanceAfterText.setText(generateText("Balance After: ",
+            (currBalance + amount).toString()))
+        binding.reasonText.setText(generateText("Reason: ",
+            reason.replaceFirstChar { a -> a.uppercaseChar() }))
         binding.dateText.setText(date)
         binding.timeText.setText(time)
 
         if (amount < 0) {
-            binding.cardContainer.background =
+            binding.card.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.card_red)
         } else {
-            binding.cardContainer.background =
+            binding.card.background =
                 ContextCompat.getDrawable(requireContext(), R.drawable.card_green)
         }
 
-        binding.cardContainer.setOnLongClickListener { v ->
-            val alertDialog: AlertDialog? = activity?.let {
-                val builder = AlertDialog.Builder(it)
-                builder.apply {
-                    setPositiveButton("OK",
-                        DialogInterface.OnClickListener { dialog, _ ->
-                            db?.deleteRecord(id, requireContext())
-                            binding.root.visibility = View.GONE
-                        })
-                    setNegativeButton("Cancel",
-                        DialogInterface.OnClickListener { dialog, id ->
-                            // User cancelled the dialog
-                        })
-                }
-                // Set other dialog properties
-                builder?.setMessage("Delete the record?")
-                    .setTitle("Alert")
+        val swipeDismissBehavior = SwipeDismissBehavior<View>()
+        swipeDismissBehavior.setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_END_TO_START)
 
-                // Create the AlertDialog
-                builder.create()
+        val cardContentLayout: MaterialCardView = binding.card
+        val coordinatorParams = cardContentLayout.layoutParams as CoordinatorLayout.LayoutParams
+
+        coordinatorParams.behavior = swipeDismissBehavior
+
+        val that = this
+        swipeDismissBehavior.listener = object : SwipeDismissBehavior.OnDismissListener {
+            override fun onDismiss(view: View?) {
+                Snackbar.make(historyFragmentBinding!!.container, "Deleted Record", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("UNDO") { v ->
+                        binding.root.visibility = View.VISIBLE
+                        coordinatorParams.setMargins(0, 0, 0, 0);
+                        cardContentLayout.alpha = 1.0f;
+                        cardContentLayout.requestLayout();
+                    }.show()
+                binding.root.visibility = View.GONE
+                false
             }
 
-            alertDialog?.show()
-            false
+            override fun onDragStateChanged(state: Int) {
+                that.onDragStateChanged(state, cardContentLayout)
+            }
         }
+
+
+//        binding.cardContainer.setOnLongClickListener { v ->
+//            val alertDialog: AlertDialog? = activity?.let {
+//                val builder = AlertDialog.Builder(it)
+//                builder.apply {
+//                    setPositiveButton("OK",
+//                        DialogInterface.OnClickListener { dialog, _ ->
+//                            db?.deleteRecord(id, requireContext())
+//                            binding.root.visibility = View.GONE
+//                        })
+//                    setNegativeButton("Cancel",
+//                        DialogInterface.OnClickListener { dialog, id ->
+//                            // User cancelled the dialog
+//                        })
+//                }
+//                // Set other dialog properties
+//                builder?.setMessage("Delete the record?")
+//                    .setTitle("Alert")
+//
+//                // Create the AlertDialog
+//                builder.create()
+//            }
+//
+//            alertDialog?.show()
+//            false
+//        }
+
     }
 
     fun getMoney(money: Int): String {
@@ -121,5 +166,15 @@ open class HistoryFragment: Fragment(R.layout.history_fragment)  {
 
     override fun onDestroyView() {
         super.onDestroyView()
+    }
+
+    fun onDragStateChanged(state: Int, cardContentLayout: MaterialCardView) {
+        when (state) {
+            SwipeDismissBehavior.STATE_DRAGGING, SwipeDismissBehavior.STATE_SETTLING -> cardContentLayout.isDragged =
+                true
+            SwipeDismissBehavior.STATE_IDLE -> cardContentLayout.isDragged = false
+            else -> {
+            }
+        }
     }
 }

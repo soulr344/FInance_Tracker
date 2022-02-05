@@ -1,103 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:layout_editor_absoluteX="1dp"
-    tools:layout_editor_absoluteY="1dp">
-    <View
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+    <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card"
+        android:focusable="true"
+        android:clickable="true"
+        android:hapticFeedbackEnabled="true"
         android:layout_width="match_parent"
-        android:layout_height="10dp"/>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:id="@+id/cardContainer"
-        android:padding="10dp"
-        android:layout_marginTop="10dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
-
-        <TextView
-            android:id="@+id/idText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="right"
-            android:textAlignment="gravity"
-            android:text="0" />
-
-        <TextView
-            android:id="@+id/currBalanceText"
+        android:layout_height="wrap_content">
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
-            android:text="currBalance"
-            android:layout_alignParentTop="true"
-            android:textAlignment="textStart" />
-
-        <TextView
-            android:id="@+id/amountText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
-            android:layout_below="@id/currBalanceText"
-            android:text="Amount" />
-
-        <TextView
-            android:id="@+id/balanceAfterText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:layout_weight="1"
-            android:text="currBalance"
-            android:layout_below="@id/amountText"
-            android:textAlignment="textStart" />
-
-        <LinearLayout
-            android:id="@+id/reasonTextContainer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/balanceAfterText"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/reasonText"
-                android:layout_width="100dp"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="3dp"
-                android:text="reason" />
+                android:orientation="vertical"
+                android:id="@+id/cardContainer"
+                android:padding="10dp"
+                tools:layout_editor_absoluteX="1dp"
+                tools:layout_editor_absoluteY="1dp">
+
+                <TextView
+                    android:id="@+id/idText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:gravity="right"
+                    android:textAlignment="gravity"
+                    android:text="0" />
+
+                <TextView
+                    android:id="@+id/currBalanceText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:text="currBalance"
+                    android:layout_alignParentTop="true"
+                    android:textAlignment="textStart" />
+
+                <TextView
+                    android:id="@+id/amountText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:layout_below="@id/currBalanceText"
+                    android:text="Amount" />
+
+                <TextView
+                    android:id="@+id/balanceAfterText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="3dp"
+                    android:layout_weight="1"
+                    android:text="currBalance"
+                    android:layout_below="@id/amountText"
+                    android:textAlignment="textStart" />
+
+                <LinearLayout
+                    android:id="@+id/reasonTextContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/balanceAfterText"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/reasonText"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="3dp"
+                        android:text="reason" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/reasonTextContainer"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/dateText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="DD MM, YYYY"
+                        android:layout_margin="3dp"
+                        android:textAlignment="center" />
+
+                    <TextView
+                        android:id="@+id/timeText"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="3dp"
+                        android:layout_weight="1"
+                        android:text="HH:MM"
+                        android:textAlignment="textStart" />
+                </LinearLayout>
+            </RelativeLayout>
         </LinearLayout>
-
-        <LinearLayout
+        <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/reasonTextContainer"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/dateText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="DD MM, YYYY"
-                android:layout_margin="3dp"
-                android:textAlignment="center" />
-
-            <TextView
-                android:id="@+id/timeText"
-                android:layout_width="100dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="3dp"
-                android:layout_weight="1"
-                android:text="HH:MM"
-                android:textAlignment="textStart" />
-        </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+            android:layout_height="wrap_content"/>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

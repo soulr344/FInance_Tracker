@@ -11,7 +11,6 @@ import com.totsuka.ftracker.databinding.ActivityMainBinding
 import com.totsuka.ftracker.ui.main.DbHelper
 import android.view.Menu
 
-
 var db: DbHelper? = null
 
 class MainActivity : AppCompatActivity() {
@@ -40,6 +39,7 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true);
 
         db = DbHelper(this)
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

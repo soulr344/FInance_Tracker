@@ -18,7 +18,6 @@ import com.totsuka.ftracker.MainActivity
 import com.totsuka.ftracker.R
 import com.totsuka.ftracker.databinding.MainFragmentBinding
 import com.totsuka.ftracker.db
-import com.totsuka.ftracker.ui.main.a
 import java.util.*
 
 class MainFragment: Fragment(R.layout.main_fragment) {
