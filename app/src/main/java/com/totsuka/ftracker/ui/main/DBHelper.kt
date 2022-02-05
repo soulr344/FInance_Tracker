@@ -48,11 +48,12 @@ class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         onUpgrade(db, oldVersion, newVersion)
     }
 
-    fun insertData(value: Int, reason: String, balance: Int, dbDate: String, dbTime: String): Int{
+    fun insertData(value: Int, reason: String, balance: Int, dbDate: String, dbTime: String, id: Int? = null): Int{
         val db = this.writableDatabase
 
         // Create a new map of values, where column names are the keys
         val values = ContentValues().apply {
+            if (id != null) put(BaseColumns._ID, id)
             put(COLUMN_NAME_VALUE, value)
             put(COLUMN_NAME_REASON, reason)
             put(COLUMN_NAME_BALANCE, balance)
@@ -62,6 +63,9 @@ class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
 
         // Insert the new row, returning the primary key value of the new row
         val newRowId = db?.insert(TABLE_NAME, null, values)
+        if (count < newRowId!!) {
+            count = newRowId!!.toInt()
+        }
         return newRowId!!.toInt()
     }
 
@@ -101,13 +105,13 @@ class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return list
     }
 
-    fun deleteRecord(id: Int, context: Context){
+    fun deleteRecord(id: Int, context: Context): Int{
         val selection = "${BaseColumns._ID} = '$id'"
         val deletedRows = this.writableDatabase.delete(TABLE_NAME, selection, null)
-        Toast.makeText(context, "Deleted $deletedRows record(s).", Toast.LENGTH_SHORT).show()
         if (id == count) {
             count--
         }
+        return deletedRows
     }
 
     companion object {
