@@ -114,6 +114,10 @@ class DbHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         return deletedRows
     }
 
+    fun setCount(c: Int){
+        count = c
+    }
+
     companion object {
         const val DATABASE_VERSION = 1
         const val DATABASE_NAME = "History.db"

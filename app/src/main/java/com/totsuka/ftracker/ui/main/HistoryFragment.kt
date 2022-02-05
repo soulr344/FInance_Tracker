@@ -40,14 +40,19 @@ open class HistoryFragment: Fragment(R.layout.history_fragment)  {
         val history: MutableList<User>? = db?.getData()
         if (history != null) {
             for (item in history){
-                addCard(
-                    item.id,
-                    item.value,
-                    item.balance,
-                    item.reason,
-                    item.date,
-                    item.time
-                )
+                try{
+                    addCard(
+                        item.id,
+                        item.value,
+                        item.balance,
+                        item.reason,
+                        item.date,
+                        item.time
+                    )
+                } catch (e: NullPointerException) {
+                    db?.setCount(0)
+                    return
+                }
             }
         }
     }
