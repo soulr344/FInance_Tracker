@@ -79,6 +79,7 @@ class MainFragment: Fragment(R.layout.main_fragment) {
         val dbTime = "${arr[3]}".split(":").dropLast(1).joinToString(separator = ":")
         val reason = mainFragmentBinding!!.reasonEdittext.editText?.text.toString()
         val id = db?.insertData(amount, reason, currentBalance, dbDate, dbTime)
+        db?.setCount(id!! - 1)
 
         with (sharedPref.edit()) {
             putInt("current_balance", currentBalance + amount)
