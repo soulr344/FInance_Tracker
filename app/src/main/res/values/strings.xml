@@ -3,4 +3,6 @@
     <string name="tab_text_1">Main</string>
     <string name="tab_text_2">History</string>
     <string name="preference_file_key">user.xml</string>
+    <string name="footer_text">Made with ♥ by &lt;a href="https://github.com/soulr344"&gt;soulr344@github&lt;/a&gt;</string>
+    <string name="app_version">v1.0</string>
 </resources>
